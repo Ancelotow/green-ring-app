@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
+    scanBarcodeNormal();
+    // scanBarCode();
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -111,5 +115,44 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+      print('OUIOUI');
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+  }
+
+
+  void scanBarCode() async {
+    String barcodeScanRes = '';
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666',
+          'Cancel',
+          false,
+          ScanMode.DEFAULT);
+      print("INIT");
+    } on PlatformException {
+      barcodeScanRes = 'Error';
+    }
+
+    print("OUIOUIOUI");
+    print(barcodeScanRes);
+
   }
 }
