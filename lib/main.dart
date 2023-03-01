@@ -58,8 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                   onPressed: () => scanBarcodeNormal(),
                   child: Text('Start barcode scan')),
-              ElevatedButton(
-                  onPressed: () => _tagRead, child: Text('Start NFC scan')),
               FutureBuilder<bool>(
                 future: NfcManager.instance.isAvailable(),
                 builder: (context, ss) => ss.data != true
@@ -80,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           ElevatedButton(
                               child: Text('Tag Read'), onPressed: _tagRead),
+                          ElevatedButton(
+                              child: Text('Tag Write'), onPressed: _ndefWrite),
                         ],
                       ),
               ),
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _tagRead() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       result.value = tag.data;
-      print("OUI");
+      print("OUI SCAN READ");
       Map tagData = tag.data;
       Map tagNdef = tagData['ndef'];
       Map cachedMessage = tagNdef['cachedMessage'];
@@ -130,6 +130,32 @@ class _MyHomePageState extends State<MyHomePage> {
       print(payload);
       print(payloadAsString);
       NfcManager.instance.stopSession();
+    });
+  }
+
+  void _ndefWrite() {
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      var ndef = Ndef.from(tag);
+      if (ndef == null || !ndef.isWritable) {
+        result.value = 'Tag is not ndef writable';
+        NfcManager.instance.stopSession(errorMessage: result.value);
+        return;
+      }
+
+      NdefMessage message = NdefMessage([
+        NdefRecord.createText('{"site":"site","salle":"salle","couleur":"couleur"}'),
+      ]);
+
+      try {
+        await ndef.write(message);
+        result.value = 'Success to "Ndef Write"';
+        print("OUI SCAN WRITE");
+        NfcManager.instance.stopSession();
+      } catch (e) {
+        result.value = e;
+        NfcManager.instance.stopSession(errorMessage: result.value.toString());
+        return;
+      }
     });
   }
 }
