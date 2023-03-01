@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/ui/homepage.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 void main() {
@@ -16,8 +17,17 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+              fontSize: 40.0
+          ),
+          displayMedium: TextStyle(
+            fontSize: 25.0
+          )
+        )
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Homepage(),
     );
   }
 }
