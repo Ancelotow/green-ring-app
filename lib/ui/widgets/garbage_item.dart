@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/converter/color_converter.dart';
+import 'package:green_ring/models/notifications/submit_notification.dart';
 import 'package:green_ring/models/waste.dart';
 
 class GarbageItem extends StatefulWidget {
@@ -56,6 +57,7 @@ class _GarbageItemState extends State<GarbageItem> {
                   elevation: isSelected ? 5 : 0,
                   child: InkWell(
                     onTap: () {
+                      SubmitNotification(color).dispatch(context);
                       setState(() {
                         selectedColor = color;
                       });

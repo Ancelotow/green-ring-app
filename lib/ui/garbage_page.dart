@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:green_ring/models/converter/color_converter.dart';
 import 'package:green_ring/models/notifications/submit_notification.dart';
 import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/ui/widgets/garbage_item.dart';
@@ -16,7 +17,7 @@ class GarbagePage extends StatefulWidget {
 class _GarbagePageState extends State<GarbagePage> {
   Color? selectedColor;
 
-  final List<Waste> _waste = [
+  List<Waste> _waste = [
     Waste(trashColor: "green", shape: "Bottle", material: "Plastic"),
     Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
     Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
@@ -41,10 +42,22 @@ class _GarbagePageState extends State<GarbagePage> {
               scrollDirection: Axis.vertical,
               itemCount: _waste.length,
               itemBuilder: (context, index) =>
-                  GarbageItem(waste: _waste[index]),
+                  NotificationListener<SubmitNotification<Color>>(
+                onNotification: (notification) {
+                  setState(() {
+                    _waste[index].trashColor = ColorConverter().toStringColor(notification.value);
+                    print("OKOK");
+                    print(_waste[index].trashColor);
+                  });
+                  return true;
+                },
+                child: GarbageItem(waste: _waste[index]),
+              ),
             ),
           ),
-          ElevatedButton(onPressed: () => _scanTrashes(context), child: const Text("Valider")),
+          ElevatedButton(
+              onPressed: () => _scanTrashes(context),
+              child: const Text("Valider")),
         ],
       )),
     );
@@ -59,13 +72,24 @@ class _GarbagePageState extends State<GarbagePage> {
             children: [
               AlertDialog(
                 content: NotificationListener<SubmitNotification<String>>(
-                  child: NfcReaderGarbage(wastes: _waste,),
+                  child: NfcReaderGarbage(
+                    wastes: _waste,
+                  ),
                   onNotification: (notification) {
-                    // Navigator.of(context).pop();
                     setState(() {
-                      _waste.removeWhere((element) => element.trashColor == notification.value);
-                    });
+                      int counter = 0;
+                      _waste.removeWhere((element) {
+                        counter++;
+                        return element.trashColor == notification.value;
+                      });
 
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('+ $counter points ! 🎉'),
+                      ));
+                    });
+                    if (_waste.isEmpty) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    }
                     return true;
                   },
                 ),
@@ -76,7 +100,6 @@ class _GarbagePageState extends State<GarbagePage> {
       },
     );
   }
-
 }
 
 /*

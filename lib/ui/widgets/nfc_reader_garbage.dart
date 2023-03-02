@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:green_ring/models/converter/color_converter.dart';
 import 'package:green_ring/models/garbage.dart';
 import 'package:green_ring/models/nfc_manager_status.dart';
@@ -22,16 +24,18 @@ class _NfcReaderGarbageState extends State<NfcReaderGarbage> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
   final NfcManagerStatus _status = NfcManagerStatus.loading;
   Garbage? garbage;
+  List<String> groupedWastes = [];
 
   @override
   Widget build(BuildContext context) {
-    print('HERE: $_status');
+
+    groupedWastes = groupBy(widget.wastes, (p0) => p0.trashColor).keys.toList();
+
 
     if (_status == NfcManagerStatus.loading) {
       _read();
       return _nfcLoading();
     } else {
-      SubmitNotification(null).dispatch(context);
       return _nfcLoading();
     }
   }
@@ -44,14 +48,22 @@ class _NfcReaderGarbageState extends State<NfcReaderGarbage> {
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: SizedBox(
-            width: double.maxFinite,
-            height: double.maxFinite,
+            height: 75,
             child: ListView.builder(
-                itemCount: widget.wastes.length,
+                itemCount: groupedWastes.length,
                 itemBuilder: (context, index) {
+                  Color color = ColorConverter().toColor(groupedWastes[index]);
+
                   return SizedBox(
                     height: 30,
-                    child: Text(widget.wastes[index].trashColor),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        const Text('Scannez la poubelle '),
+                        Icon(Icons.delete, color: color),
+                        const Text(' !'),
+                      ],
+                    ),
                   );
                 }),
           ),
@@ -69,7 +81,6 @@ class _NfcReaderGarbageState extends State<NfcReaderGarbage> {
   }
 
   Future<void> _read() async {
-    print("owen");
     await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       result.value = tag.data;
       Map tagData = tag.data;
@@ -81,33 +92,19 @@ class _NfcReaderGarbageState extends State<NfcReaderGarbage> {
       payloadAsString = payloadAsString.substring(3, payloadAsString.length);
       garbage = Garbage.fromJson(json.decode(payloadAsString));
 
-      print("au dessus");
       for (var element in widget.wastes) {
         var color = ColorConverter().toStringColor(garbage!.couleur);
         if (element.trashColor == color) {
-          print("jonathn");
+          setState(() {
+            groupedWastes.removeWhere((element) {
+              return element == color;
+            });
+          });
           SubmitNotification(color).dispatch(context);
-          print("notif");
         }
       }
     });
     return;
   }
 
-  void _reader() {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      result.value = tag.data;
-      print("OUI SCAN READ");
-      Map tagData = tag.data;
-      Map tagNdef = tagData['ndef'];
-      Map cachedMessage = tagNdef['cachedMessage'];
-      Map records = cachedMessage['records'][0];
-      Uint8List payload = records['payload'];
-      String payloadAsString = String.fromCharCodes(payload);
-      garbage = Garbage.fromJson(json.decode(payloadAsString));
-      print(payload);
-      print(payloadAsString);
-      NfcManager.instance.stopSession();
-    });
-  }
 }
