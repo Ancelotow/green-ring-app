@@ -55,10 +55,10 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: AdminPage(),
+      home: Homepage(),
 
       routes: {
-        GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
+        GarbagePage.routeName: (BuildContext context) => GarbagePage(),
         Homepage.routeName: (BuildContext context) => Homepage(),
       },
     );
