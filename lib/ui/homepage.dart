@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:camera/camera.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/ui/camera_preview_page.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -69,12 +71,14 @@ class _HomepageState extends State<Homepage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () => _scanBarcode(context),
+            onPressed: () => _takePhoto(context),
             tooltip: 'Scanner le produit',
             backgroundColor: Colors.green,
             child: const Icon(Icons.remove_red_eye),
           ),
-          SizedBox(height: 25,),
+          SizedBox(
+            height: 25,
+          ),
           FloatingActionButton(
             onPressed: () => _scanBarcode(context),
             tooltip: 'Scanner le code-barre',
@@ -85,7 +89,16 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-
+  Future<void> _takePhoto(BuildContext context) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    Navigator.pushNamed(
+      context,
+      CameraPreviewPage.routeName,
+      arguments: firstCamera
+    );
+  }
 
   Future<void> _scanBarcode(BuildContext context) async {
     try {
