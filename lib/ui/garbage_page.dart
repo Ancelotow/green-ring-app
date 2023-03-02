@@ -17,8 +17,11 @@ class _GarbagePageState extends State<GarbagePage> {
   Color? selectedColor;
 
   final List<Waste> _waste = [
-    Waste(trashColor: "vert", shape: "Bottle", material: "Plastic"),
-    Waste(trashColor: "jaune", shape: "Bouchon", material: "Plastic"),
+    Waste(trashColor: "green", shape: "Bottle", material: "Plastic"),
+    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
+    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
+    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
+    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
   ];
 
   @override
@@ -55,11 +58,14 @@ class _GarbagePageState extends State<GarbagePage> {
           child: Wrap(
             children: [
               AlertDialog(
-                content: NotificationListener<SubmitNotification<void>>(
-                  child: NfcReaderGarbage(),
+                content: NotificationListener<SubmitNotification<String>>(
+                  child: NfcReaderGarbage(wastes: _waste,),
                   onNotification: (notification) {
-                    Navigator.of(context).pop();
-                    // _waste.removeAt(index);
+                    // Navigator.of(context).pop();
+                    setState(() {
+                      _waste.removeWhere((element) => element.trashColor == notification.value);
+                    });
+
                     return true;
                   },
                 ),

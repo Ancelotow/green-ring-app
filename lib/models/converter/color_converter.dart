@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 class ColorConverter {
 
   final Map<String, Color> _colors = {
-    "bleu": Colors.blue,
-    "vert": Colors.green,
-    "gris": Colors.grey,
-    "jaune": Colors.yellow
+    "blue": Colors.blue,
+    "green": Colors.green,
+    "grey": Colors.grey,
+    "yellow": Colors.yellow,
+    "black": Colors.black
   };
 
   Color toColor(String colorStr) {

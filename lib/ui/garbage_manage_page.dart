@@ -16,13 +16,8 @@ class GarbageManagePage extends StatefulWidget {
 
 class _GarbageManagePageState extends State<GarbageManagePage> {
   List<Garbage> _garbages = [
-    Garbage(id: 1, site: "ESGI", salle: "A07", couleur: Colors.blue),
-    Garbage(id: 2, site: "ESGI", salle: "A07", couleur: Colors.yellow),
-    Garbage(id: 3, site: "ESGI", salle: "A07", couleur: Colors.blue),
-    Garbage(id: 4, site: "ESGI", salle: "A07", couleur: Colors.grey),
-    Garbage(id: 5, site: "ESGI", salle: "Administration", couleur: Colors.blue),
-    Garbage(
-        id: 6, site: "ESGI", salle: "Administration", couleur: Colors.yellow),
+
+    Garbage(id: '-1', site: 'site', salle: 'salle', couleur: Colors.blue)
   ];
 
   @override
