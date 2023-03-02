@@ -20,11 +20,15 @@ class _NfcWriterState extends State<NfcWriter> {
 
   @override
   Widget build(BuildContext context) {
-    _writer();
-    return Container();
+    if(_status == NfcManagerStatus.loading) {
+      _writer();
+      return _nfcLoading();
+    } else {
+      return _nfcSuccess();
+    }
   }
 
-  Widget _NfcLoading() {
+  Widget _nfcLoading() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -40,7 +44,7 @@ class _NfcWriterState extends State<NfcWriter> {
     );
   }
 
-  Widget _NfcSuccess() {
+  Widget _nfcSuccess() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,7 +60,7 @@ class _NfcWriterState extends State<NfcWriter> {
     );
   }
 
-  Widget _NfcError() {
+  Widget _nfcError() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,34 +76,26 @@ class _NfcWriterState extends State<NfcWriter> {
     );
   }
 
-  Future<bool> _writer() async {
-    bool isValid = false;
-    await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+  void _writer() async {
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);
-      if (ndef == null || !ndef.isWritable) {
-        NfcManager.instance.stopSession(errorMessage: result.value);
-        isValid = false;
-        return;
-      }
+      if (ndef != null && ndef.isWritable) {
+        NdefMessage message = NdefMessage([
+          NdefRecord.createText(widget.tagValue),
+        ]);
 
-      NdefMessage message = NdefMessage([
-        NdefRecord.createText(widget.tagValue),
-      ]);
-
-      try {
-        await ndef.write(message);
-        NfcManager.instance.stopSession();
-        isValid = true;
-        return;
-      } catch (e) {
-        NfcManager.instance.stopSession(errorMessage: result.value.toString());
-        isValid = false;
-        return;
+        try {
+          await ndef.write(message);
+          NfcManager.instance.stopSession();
+          setState(() {
+            _status = NfcManagerStatus.success;
+          });
+          return;
+        } catch (e) {
+          NfcManager.instance.stopSession(errorMessage: result.value.toString());
+          return;
+        }
       }
     });
-    if(!isValid) {
-
-    }
-    return isValid;
   }
 }
