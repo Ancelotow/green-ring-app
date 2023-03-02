@@ -27,37 +27,56 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _garbages.length,
-      itemBuilder: (context, index) {
-        final item = _garbages[index];
-        return Dismissible(
-          direction: DismissDirection.endToStart,
-          key: Key(item.id.toString()),
-          background: _backgroundListDismissible(context),
-          onDismissed: (direction) => _removeGarbage(context, index),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                IconGarbage(garbage: item),
-                const SizedBox(width: 10,),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Site: ${item.site}"),
-                    const SizedBox(height: 5,),
-                    Text("Salle: ${item.salle}")
-                  ],
-                )
-              ],
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Poubelles",
+            style: Theme.of(context).textTheme.displayMedium,
           ),
-        );
-      },
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _garbages.length,
+            itemBuilder: (context, index) {
+              final item = _garbages[index];
+              return Dismissible(
+                direction: DismissDirection.endToStart,
+                key: Key(item.id.toString()),
+                background: _backgroundListDismissible(context),
+                onDismissed: (direction) => _removeGarbage(context, index),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconGarbage(garbage: item),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Site: ${item.site}"),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text("Salle: ${item.salle}")
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
