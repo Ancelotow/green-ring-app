@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:green_ring/models/converter/color_converter.dart';
 
 class Garbage {
@@ -18,6 +17,12 @@ class Garbage {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
+    "site": site,
+    "room": salle,
+    "color": ColorConverter().toStringColor(couleur)
+  };
+
+  Map<String, dynamic> toJsonForCreation() => {
     "site": site,
     "room": salle,
     "color": ColorConverter().toStringColor(couleur)

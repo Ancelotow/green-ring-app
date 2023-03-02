@@ -23,4 +23,17 @@ class ServiceAPI {
     }
     return garbages;
   }
+
+  Future<Garbage?> addGarbage(Garbage garbage) async {
+    final response = await dio.post('$baseURL/trashs/create', data: garbage.toJsonForCreation());
+    if(response.statusCode == 200) {
+      return Garbage.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> deleteGarbage(String id) async {
+    final response = await dio.delete('$baseURL/trashs/$id');
+  }
 }
