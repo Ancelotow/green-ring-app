@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:green_ring/models/nfc_manager_status.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
+import '../../models/notifications/submit_notification.dart';
+
 class NfcWriter extends StatefulWidget {
   final String tagValue;
 
@@ -24,6 +26,7 @@ class _NfcWriterState extends State<NfcWriter> {
       _writer();
       return _nfcLoading();
     } else {
+      SubmitNotification(null).dispatch(context);
       return _nfcSuccess();
     }
   }
@@ -39,7 +42,7 @@ class _NfcWriterState extends State<NfcWriter> {
           color: Colors.blue,
         ),
         SizedBox(height: 10,),
-        Text("En attente du NFC")
+        Text("En attente du tag NFC")
       ],
     );
   }
@@ -55,7 +58,7 @@ class _NfcWriterState extends State<NfcWriter> {
           color: Colors.green,
         ),
         SizedBox(height: 10,),
-        Text("Ecriture réussie")
+        Text("Ecriture sur le tag NFC réussie")
       ],
     );
   }
