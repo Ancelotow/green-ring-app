@@ -18,4 +18,6 @@ class ColorConverter {
     return _colors.entries.where((e) => e.value == color).first.key;
   }
 
+  Map<String, Color> getColors() => _colors;
+
 }

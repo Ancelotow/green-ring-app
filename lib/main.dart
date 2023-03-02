@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/ui/admin_page.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 import 'package:green_ring/ui/homepage.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -18,6 +19,32 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color:  Color.fromARGB(255, 0, 0, 0),
+              width: 1.0,
+            ),
+            borderRadius: BorderRadius.circular(8.00),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 0, 42, 255),
+              width: 2.0,
+            ),
+            borderRadius: BorderRadius.circular(8.00),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 227, 2, 2),
+              width: 2.0,
+            ),
+            borderRadius: BorderRadius.circular(8.00),
+          ),
+          filled: true,
+          contentPadding: const EdgeInsets.all(6.00),
+          hoverColor: Colors.transparent,
+        ),
         textTheme: const TextTheme(
           displayLarge: TextStyle(
             fontWeight: FontWeight.bold,
@@ -28,7 +55,8 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: Homepage(),
+      home: AdminPage(),
+
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
         Homepage.routeName: (BuildContext context) => Homepage(),
@@ -93,8 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           ElevatedButton(
                               child: Text('Tag Read'), onPressed: _tagRead),
-                          ElevatedButton(
-                              child: Text('Tag Write'), onPressed: _ndefWrite),
                         ],
                       ),
               ),
@@ -148,29 +174,5 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _ndefWrite() {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      var ndef = Ndef.from(tag);
-      if (ndef == null || !ndef.isWritable) {
-        result.value = 'Tag is not ndef writable';
-        NfcManager.instance.stopSession(errorMessage: result.value);
-        return;
-      }
 
-      NdefMessage message = NdefMessage([
-        NdefRecord.createText('{"site":"site","salle":"salle","couleur":"couleur"}'),
-      ]);
-
-      try {
-        await ndef.write(message);
-        result.value = 'Success to "Ndef Write"';
-        print("OUI SCAN WRITE");
-        NfcManager.instance.stopSession();
-      } catch (e) {
-        result.value = e;
-        NfcManager.instance.stopSession(errorMessage: result.value.toString());
-        return;
-      }
-    });
-  }
 }
