@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/item_bottom_navbar.dart';
 import 'package:green_ring/ui/garbage_manage_page.dart';
+import 'package:green_ring/ui/rewards_manage_page.dart';
 
 class AdminPage extends StatefulWidget {
   AdminPage({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _AdminPageState extends State<AdminPage> {
         ),
         label: "Récompenses",
       ),
-      controller: const GarbageManagePage(),
+      controller: const RewardsManagePage(),
     )
   ];
 
