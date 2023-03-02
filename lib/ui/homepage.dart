@@ -8,7 +8,7 @@ import 'package:green_ring/ui/garbage_page.dart';
 class Homepage extends StatefulWidget {
   static String routeName = "HomePage";
 
-  Homepage({Key? key}) : super(key: key);
+  const Homepage({Key? key}) : super(key: key);
 
   @override
   State<Homepage> createState() => _HomepageState();
