@@ -110,6 +110,7 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
   void _removeGarbage(BuildContext context, int index) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext contextDialog) {
         return Center(
           child: Wrap(
