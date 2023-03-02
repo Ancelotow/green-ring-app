@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final service = ServiceAPI();
-    service.getHttp();
+    service.getWasteById('3596710356287');
 
 
     return MaterialApp(
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: AdminPage(),
+      home: Homepage(),
 
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),

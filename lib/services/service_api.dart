@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 
-
 class ServiceAPI {
+  final baseURL = 'http://34.105.224.254';
   final dio = Dio();
 
-  void getHttp() async {
-    final response = await dio.get('http://34.105.224.254/wastes/3596710356287');
-    print('HERE');
+  void getWasteById(String id) async {
+    final response = await dio.get('$baseURL/wastes/$id');
     print(response);
   }
+
+
+
 }
