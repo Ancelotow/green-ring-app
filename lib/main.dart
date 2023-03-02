@@ -47,14 +47,16 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           displayLarge: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 40.0),
+            fontWeight: FontWeight.bold,
+              fontSize: 40.0
+          ),
           displayMedium: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 25.0),
-          displaySmall: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 25.0),
-        ),
+            fontSize: 25.0
+          )
+        )
       ),
       home: AdminPage(),
+
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
         Homepage.routeName: (BuildContext context) => Homepage(),
@@ -171,4 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
       NfcManager.instance.stopSession();
     });
   }
+
+
 }

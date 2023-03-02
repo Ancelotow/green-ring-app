@@ -18,9 +18,10 @@ class _HomepageState extends State<Homepage> {
   late ConfettiController _controllerCenter;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    _controllerCenter = ConfettiController(duration: const Duration(seconds: 20));
+    _controllerCenter =
+        ConfettiController(duration: const Duration(seconds: 20));
   }
 
   @override
@@ -82,5 +83,4 @@ class _HomepageState extends State<Homepage> {
       print("Erreur: Failed to get platform version.");
     }
   }
-
 }
