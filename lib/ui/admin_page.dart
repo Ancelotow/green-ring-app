@@ -8,15 +8,24 @@ import 'package:green_ring/ui/widgets/admin_bottom_navbar.dart';
 import 'package:green_ring/ui/widgets/nfc_remove_garbage.dart';
 import 'package:green_ring/ui/widgets/nfc_writer.dart';
 
-class AdminPage extends StatelessWidget {
+class AdminPage extends StatefulWidget {
 
   AdminPage({Key? key}) : super(key: key);
+
+  @override
+  State<AdminPage> createState() => _AdminPageState();
+}
+
+class _AdminPageState extends State<AdminPage> {
   List<AdminBottomNavbar> _items = [];
+
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    _loadListBottomNavbar(context);
+    if(_items.isEmpty){
+      _loadListBottomNavbar(context);
+    }
     return Scaffold(
       appBar: AppBar(
         actions: _items[currentIndex].actions,
@@ -69,7 +78,10 @@ class AdminPage extends StatelessWidget {
 
   BottomNavigationBar _getBottomNavigationBar(BuildContext context) {
     return BottomNavigationBar(
-      onTap: (index) => currentIndex = index,
+      onTap: (index) => setState(() {
+        currentIndex = index;
+      }),
+      currentIndex: currentIndex,
       items: _items.map((e) => e.itemNavbar).toList(),
     );
   }
