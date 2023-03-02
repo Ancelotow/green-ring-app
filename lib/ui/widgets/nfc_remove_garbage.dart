@@ -17,11 +17,12 @@ class NfcRemoveGarbage extends StatefulWidget {
 class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
   NfcManagerStatus _status = NfcManagerStatus.loading;
+  Garbage? garbage;
 
   @override
   Widget build(BuildContext context) {
     if (_status == NfcManagerStatus.loading) {
-      _writer();
+      _read().then((value) => _writer());
       return _nfcLoading();
     } else {
       SubmitNotification(null).dispatch(context);
@@ -42,7 +43,10 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
         SizedBox(
           height: 10,
         ),
-        Text("En attente du tag NFC")
+        Text(
+          "En attente du tag NFC pour suppression",
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
@@ -60,7 +64,10 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
         SizedBox(
           height: 10,
         ),
-        Text("Ecriture sur le tag NFC réussie")
+        Text(
+          "Suppression du tag NFC réussie",
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
@@ -78,37 +85,16 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
         SizedBox(
           height: 10,
         ),
-        Text("Ecriture échouée")
+        Text(
+          "Suppression échouée",
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
 
-  void _writer() async {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      var ndef = Ndef.from(tag);
-      if (ndef != null && ndef.isWritable) {
-        NdefMessage message = NdefMessage([
-          NdefRecord.createText(""),
-        ]);
-
-        try {
-          await ndef.write(message);
-          NfcManager.instance.stopSession();
-          setState(() {
-            _status = NfcManagerStatus.success;
-          });
-          return;
-        } catch (e) {
-          NfcManager.instance
-              .stopSession(errorMessage: result.value.toString());
-          return;
-        }
-      }
-    });
-  }
-
-  void _read() async {
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+  Future<void> _read() async {
+    await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       result.value = tag.data;
       Map tagData = tag.data;
       Map tagNdef = tagData['ndef'];
@@ -116,11 +102,20 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
       Map records = cachedMessage['records'][0];
       Uint8List payload = records['payload'];
       String payloadAsString = String.fromCharCodes(payload);
-      final garbage = Garbage.fromJson(json.decode(payloadAsString));
-      print(garbage.salle);
+      payloadAsString = payloadAsString.substring(3, payloadAsString.length);
+      garbage = Garbage.fromJson(json.decode(payloadAsString));
+      return;
+    });
+    return;
+  }
+
+  Future<void> _writer() async {
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);
       if (ndef != null && ndef.isWritable) {
-        NdefMessage message = NdefMessage([]);
+        NdefMessage message = NdefMessage([
+          NdefRecord.createText(""),
+        ]);
         try {
           await ndef.write(message);
           NfcManager.instance.stopSession();
@@ -134,7 +129,7 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
           return;
         }
       }
-      NfcManager.instance.stopSession();
     });
+    return;
   }
 }

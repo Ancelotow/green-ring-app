@@ -21,7 +21,7 @@ class _NfcWriterState extends State<NfcWriter> {
 
   @override
   Widget build(BuildContext context) {
-    if(_status == NfcManagerStatus.loading) {
+    if (_status == NfcManagerStatus.loading) {
       _writer();
       return _nfcLoading();
     } else {
@@ -40,8 +40,13 @@ class _NfcWriterState extends State<NfcWriter> {
           size: 20,
           color: Colors.blue,
         ),
-        SizedBox(height: 10,),
-        Text("En attente du tag NFC")
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "En attente du tag NFC pour écriture",
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
@@ -56,8 +61,13 @@ class _NfcWriterState extends State<NfcWriter> {
           size: 20,
           color: Colors.green,
         ),
-        SizedBox(height: 10,),
-        Text("Ecriture sur le tag NFC réussie")
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Ecriture sur le tag NFC réussie",
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
@@ -72,8 +82,13 @@ class _NfcWriterState extends State<NfcWriter> {
           size: 20,
           color: Colors.red,
         ),
-        SizedBox(height: 10,),
-        Text("Ecriture échouée")
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          "Ecriture échouée",
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
@@ -94,7 +109,8 @@ class _NfcWriterState extends State<NfcWriter> {
           });
           return;
         } catch (e) {
-          NfcManager.instance.stopSession(errorMessage: result.value.toString());
+          NfcManager.instance
+              .stopSession(errorMessage: result.value.toString());
           return;
         }
       }

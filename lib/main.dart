@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
               fontSize: 40.0
           ),
           displayMedium: TextStyle(
+            color: Colors.black,
             fontSize: 25.0
           )
         )
