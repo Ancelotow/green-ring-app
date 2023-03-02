@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:green_ring/models/product.dart';
-
 import '../../models/notifications/submit_notification.dart';
 
 class RewardForm extends StatelessWidget {
