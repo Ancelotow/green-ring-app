@@ -22,4 +22,11 @@ class Garbage {
     "salle": salle,
     "couleur": ColorConverter().toStringColor(couleur)
   };
+
+  Garbage.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        site = json['site'],
+        salle = json['salle'],
+        couleur = ColorConverter().toColor(json['couleur']);
+
 }

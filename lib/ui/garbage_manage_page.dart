@@ -8,7 +8,7 @@ import '../models/garbage.dart';
 import '../models/notifications/submit_notification.dart';
 
 class GarbageManagePage extends StatefulWidget {
-  GarbageManagePage({Key? key}) : super(key: key);
+  const GarbageManagePage({Key? key}) : super(key: key);
 
   @override
   State<GarbageManagePage> createState() => _GarbageManagePageState();
@@ -43,34 +43,28 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
             itemCount: _garbages.length,
             itemBuilder: (context, index) {
               final item = _garbages[index];
-              return Dismissible(
-                direction: DismissDirection.endToStart,
-                key: Key(item.id.toString()),
-                background: _backgroundListDismissible(context),
-                onDismissed: (direction) => _removeGarbage(context, index),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconGarbage(garbage: item),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Site: ${item.site}"),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text("Salle: ${item.salle}")
-                        ],
-                      )
-                    ],
-                  ),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconGarbage(garbage: item),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Site: ${item.site}"),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text("Salle: ${item.salle}")
+                      ],
+                    )
+                  ],
                 ),
               );
             },
@@ -80,56 +74,4 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
     );
   }
 
-  Widget _backgroundListDismissible(BuildContext context) {
-    return Container(
-      alignment: AlignmentDirectional.centerEnd,
-      color: Colors.red,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 0.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
-            Icon(
-              Icons.delete_forever,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              "Supprimer",
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _removeGarbage(BuildContext context, int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext contextDialog) {
-        return Center(
-          child: Wrap(
-            children: [
-              AlertDialog(
-                content: NotificationListener<SubmitNotification<void>>(
-                  child: NfcWriter(
-                    tagValue: json.encode(""),
-                  ),
-                  onNotification: (notification) {
-                    Navigator.of(context).pop();
-                    _garbages.removeAt(index);
-                    return true;
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }

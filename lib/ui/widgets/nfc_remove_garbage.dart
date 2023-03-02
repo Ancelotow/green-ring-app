@@ -1,28 +1,28 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/nfc_manager_status.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import '../../models/garbage.dart';
 import '../../models/notifications/submit_notification.dart';
 
-class NfcWriter extends StatefulWidget {
-  final String tagValue;
-
-  const NfcWriter({
-    Key? key,
-    required this.tagValue,
-  }) : super(key: key);
+class NfcRemoveGarbage extends StatefulWidget {
+  const NfcRemoveGarbage({Key? key}) : super(key: key);
 
   @override
-  State<NfcWriter> createState() => _NfcWriterState();
+  State<NfcRemoveGarbage> createState() => _NfcRemoveGarbageState();
 }
 
-class _NfcWriterState extends State<NfcWriter> {
+class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
   NfcManagerStatus _status = NfcManagerStatus.loading;
+  Garbage? garbage;
 
   @override
   Widget build(BuildContext context) {
     if (_status == NfcManagerStatus.loading) {
-      _writer();
+      _read().then((value) => _writer());
       return _nfcLoading();
     } else {
       SubmitNotification(null).dispatch(context);
@@ -44,7 +44,7 @@ class _NfcWriterState extends State<NfcWriter> {
           height: 10,
         ),
         Text(
-          "En attente du tag NFC pour écriture",
+          "En attente du tag NFC pour suppression",
           textAlign: TextAlign.center,
         )
       ],
@@ -65,7 +65,7 @@ class _NfcWriterState extends State<NfcWriter> {
           height: 10,
         ),
         Text(
-          "Ecriture sur le tag NFC réussie",
+          "Suppression du tag NFC réussie",
           textAlign: TextAlign.center,
         )
       ],
@@ -86,21 +86,36 @@ class _NfcWriterState extends State<NfcWriter> {
           height: 10,
         ),
         Text(
-          "Ecriture échouée",
+          "Suppression échouée",
           textAlign: TextAlign.center,
         )
       ],
     );
   }
 
-  void _writer() async {
+  Future<void> _read() async {
+    await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      result.value = tag.data;
+      Map tagData = tag.data;
+      Map tagNdef = tagData['ndef'];
+      Map cachedMessage = tagNdef['cachedMessage'];
+      Map records = cachedMessage['records'][0];
+      Uint8List payload = records['payload'];
+      String payloadAsString = String.fromCharCodes(payload);
+      payloadAsString = payloadAsString.substring(3, payloadAsString.length);
+      garbage = Garbage.fromJson(json.decode(payloadAsString));
+      return;
+    });
+    return;
+  }
+
+  Future<void> _writer() async {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);
       if (ndef != null && ndef.isWritable) {
         NdefMessage message = NdefMessage([
-          NdefRecord.createText(widget.tagValue),
+          NdefRecord.createText(""),
         ]);
-
         try {
           await ndef.write(message);
           NfcManager.instance.stopSession();
@@ -115,5 +130,6 @@ class _NfcWriterState extends State<NfcWriter> {
         }
       }
     });
+    return;
   }
 }
