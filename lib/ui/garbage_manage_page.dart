@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/widgets/icone_garbage.dart';
+import 'package:green_ring/ui/widgets/info_error.dart';
 import 'package:green_ring/ui/widgets/nfc_writer.dart';
-
 import '../models/garbage.dart';
 import '../models/notifications/submit_notification.dart';
 
@@ -15,15 +15,7 @@ class GarbageManagePage extends StatefulWidget {
 }
 
 class _GarbageManagePageState extends State<GarbageManagePage> {
-  List<Garbage> _garbages = [
-    Garbage(id: 1, site: "ESGI", salle: "A07", couleur: Colors.blue),
-    Garbage(id: 2, site: "ESGI", salle: "A07", couleur: Colors.yellow),
-    Garbage(id: 3, site: "ESGI", salle: "A07", couleur: Colors.blue),
-    Garbage(id: 4, site: "ESGI", salle: "A07", couleur: Colors.grey),
-    Garbage(id: 5, site: "ESGI", salle: "Administration", couleur: Colors.blue),
-    Garbage(
-        id: 6, site: "ESGI", salle: "Administration", couleur: Colors.yellow),
-  ];
+  List<Garbage> _garbages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -35,42 +27,66 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             "Poubelles",
-            style: Theme.of(context).textTheme.displayMedium,
+            style: Theme
+                .of(context)
+                .textTheme
+                .displayMedium,
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: _garbages.length,
-            itemBuilder: (context, index) {
-              final item = _garbages[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconGarbage(garbage: item),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Site: ${item.site}"),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text("Salle: ${item.salle}")
-                      ],
-                    )
-                  ],
-                ),
-              );
+          child: FutureBuilder(
+            future: ServiceAPI().getGarbages(),
+            builder: (BuildContext context, AsyncSnapshot<List<Garbage>> snapshot) {
+              if (snapshot.hasData) {
+                _garbages = snapshot.data!;
+                return _getBody(context);
+              } else if (snapshot.hasError) {
+                return InfoError(error: snapshot.error as Error);
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.blue,
+                    semanticsLabel: "Chargement en cours...",
+                  ),
+                );
+              }
             },
           ),
         ),
       ],
+    );
+  }
+
+  Widget _getBody(BuildContext context) {
+    return ListView.builder(
+      itemCount: _garbages.length,
+      itemBuilder: (context, index) {
+        final item = _garbages[index];
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconGarbage(garbage: item),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Site: ${item.site}"),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text("Salle: ${item.salle}")
+                ],
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 
