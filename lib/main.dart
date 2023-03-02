@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/admin_page.dart';
+import 'package:green_ring/ui/connect_distributor.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 import 'package:green_ring/ui/homepage.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final service = ServiceAPI();
-    service.getWasteById('3596710356287');
+    // service.getWasteById('3596710356287');
 
 
     return MaterialApp(
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: Homepage(),
+      home: ConnectDistributor(),
 
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
