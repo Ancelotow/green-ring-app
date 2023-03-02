@@ -19,6 +19,7 @@ class ServiceAPI {
     final response = await dio.get('$baseURL/trashs/');
     if(response.statusCode == 200) {
       final data = response.data as List<dynamic>;
+      print(data);
       garbages = data.map((json) => Garbage.fromJson(json)).toList();
     } else {
 

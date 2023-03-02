@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
 
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: AdminPage(),
+      home: Homepage(),
 
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),

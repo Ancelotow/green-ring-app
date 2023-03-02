@@ -65,13 +65,27 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _scanBarcode(context),
-        tooltip: 'Scanner le produit',
-        child: const Icon(Icons.qr_code),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () => _scanBarcode(context),
+            tooltip: 'Scanner le produit',
+            backgroundColor: Colors.green,
+            child: const Icon(Icons.remove_red_eye),
+          ),
+          SizedBox(height: 25,),
+          FloatingActionButton(
+            onPressed: () => _scanBarcode(context),
+            tooltip: 'Scanner le code-barre',
+            child: const Icon(Icons.qr_code),
+          ),
+        ],
       ),
     );
   }
+
+
 
   Future<void> _scanBarcode(BuildContext context) async {
     try {
