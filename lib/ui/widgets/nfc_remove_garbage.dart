@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/nfc_manager_status.dart';
+import 'package:green_ring/services/service_api.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import '../../models/garbage.dart';
 import '../../models/notifications/submit_notification.dart';
@@ -22,10 +23,10 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
   @override
   Widget build(BuildContext context) {
     if (_status == NfcManagerStatus.loading) {
-      _read().then((value) => _writer());
+      _readAndRemove();
       return _nfcLoading();
     } else {
-      SubmitNotification(null).dispatch(context);
+      SubmitNotification(garbage!.id).dispatch(context);
       return _nfcSuccess();
     }
   }
@@ -93,7 +94,7 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
     );
   }
 
-  Future<void> _read() async {
+  Future<void> _readAndRemove() async {
     await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       result.value = tag.data;
       Map tagData = tag.data;
@@ -104,9 +105,9 @@ class _NfcRemoveGarbageState extends State<NfcRemoveGarbage> {
       String payloadAsString = String.fromCharCodes(payload);
       payloadAsString = payloadAsString.substring(3, payloadAsString.length);
       garbage = Garbage.fromJson(json.decode(payloadAsString));
-      return;
+      await ServiceAPI().deleteGarbage(garbage!.id);
+      _writer();
     });
-    return;
   }
 
   Future<void> _writer() async {

@@ -6,7 +6,6 @@ class ColorConverter {
   final Map<String, Color> _colors = {
     "blue": Colors.blue,
     "green": Colors.green,
-    "grey": Colors.grey,
     "yellow": Colors.yellow,
     "black": Colors.black
   };
