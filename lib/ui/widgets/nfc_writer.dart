@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/nfc_manager_status.dart';
 import 'package:nfc_manager/nfc_manager.dart';
-
 import '../../models/notifications/submit_notification.dart';
 
 class NfcWriter extends StatefulWidget {

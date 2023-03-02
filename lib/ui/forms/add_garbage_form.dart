@@ -102,6 +102,7 @@ class AddGarbageForm extends StatelessWidget {
   void _submit(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       var garbage = Garbage(
+          id: -1,
           site: ctrlSite.text,
           salle: ctrlSalle.text,
           couleur: _colorSelected!

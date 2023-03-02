@@ -1,22 +1,60 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/garbage.dart';
 import 'package:green_ring/models/notifications/submit_notification.dart';
-import 'package:green_ring/ui/add_garbage_form.dart';
+import 'package:green_ring/ui/forms/add_garbage_form.dart';
+import 'package:green_ring/ui/garbage_manage_page.dart';
 import 'package:green_ring/ui/widgets/nfc_writer.dart';
 
 class AdminPage extends StatelessWidget {
-  const AdminPage({Key? key}) : super(key: key);
+  List<Garbage> _garbages = [];
+  Widget _currentPage = GarbageManagePage();
+
+  AdminPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _addGarbageForm(context),
-        tooltip: 'Scanner le produit',
-        child: const Icon(Icons.add),
+      appBar: AppBar(
+        title: const Text(
+          "Administrateur",
+        ),
       ),
+      body: SafeArea(
+        child: _currentPage,
+      ),
+      bottomNavigationBar: _getBottomNavigationBar(context),
+      floatingActionButton: _getFloatingButtonAction(context),
+    );
+  }
+
+  BottomNavigationBar _getBottomNavigationBar(BuildContext context) {
+    return BottomNavigationBar(
+      onTap: (index) => {
+
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.delete,
+          ),
+          label: "Poubelles"
+        ),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.emoji_events,
+            ),
+            label: "Récompenses"
+        ),
+      ],
+    );
+  }
+
+  FloatingActionButton _getFloatingButtonAction(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => _addGarbageForm(context),
+      tooltip: 'Scanner le produit',
+      child: const Icon(Icons.add),
     );
   }
 

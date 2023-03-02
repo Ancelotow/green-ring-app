@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
-              color:  Color.fromARGB(255, 0, 0, 0),
+              color: Color.fromARGB(255, 0, 0, 0),
               width: 1.0,
             ),
             borderRadius: BorderRadius.circular(8.00),
@@ -47,16 +47,14 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: const TextTheme(
           displayLarge: TextStyle(
-            fontWeight: FontWeight.bold,
-              fontSize: 40.0
-          ),
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 40.0),
           displayMedium: TextStyle(
-            fontSize: 25.0
-          )
-        )
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 25.0),
+          displaySmall: TextStyle(
+              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 25.0),
+        ),
       ),
       home: AdminPage(),
-
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
         Homepage.routeName: (BuildContext context) => Homepage(),
@@ -173,6 +171,4 @@ class _MyHomePageState extends State<MyHomePage> {
       NfcManager.instance.stopSession();
     });
   }
-
-
 }
