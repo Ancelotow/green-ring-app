@@ -3,9 +3,10 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/ui/garbage_page.dart';
 
 class Homepage extends StatefulWidget {
-
+  static String routeName = "HomePage";
 
   Homepage({Key? key}) : super(key: key);
 
@@ -64,17 +65,18 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _scanBarcode,
+        onPressed: () => _scanBarcode(context),
         tooltip: 'Scanner le produit',
         child: const Icon(Icons.qr_code),
       ),
     );
   }
 
-  Future<void> _scanBarcode() async {
+  Future<void> _scanBarcode(BuildContext context) async {
     try {
       String result = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      Navigator.of(context).pushNamed(GarbagePage.routeName);
       // TODO: Appeler l'API pour envoyer le code barre
     } on PlatformException {
       print("Erreur: Failed to get platform version.");

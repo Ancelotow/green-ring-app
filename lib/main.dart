@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/ui/garbage_page.dart';
 import 'package:green_ring/ui/homepage.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
@@ -28,6 +29,10 @@ class MyApp extends StatelessWidget {
         )
       ),
       home: Homepage(),
+      routes: {
+        GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
+        Homepage.routeName: (BuildContext context) => Homepage(),
+      },
     );
   }
 }
