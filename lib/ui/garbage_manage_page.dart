@@ -36,27 +36,18 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
           )
         ],
         title: const Text(
-          "Administrateur",
+          "Admin - Poubelles",
         ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Poubelles",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .displayMedium,
-            ),
-          ),
           Expanded(
             child: FutureBuilder(
               future: ServiceAPI().getGarbages(),
-              builder: (BuildContext context, AsyncSnapshot<List<Garbage>> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Garbage>> snapshot) {
                 if (snapshot.hasData) {
                   _garbages = snapshot.data!;
                   return _getBody(context);
@@ -85,27 +76,38 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
       itemBuilder: (context, index) {
         final item = _garbages[index];
         return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              IconGarbage(garbage: item),
-              const SizedBox(
-                width: 10,
+          padding: const EdgeInsets.all(5.0),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).primaryColor,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              borderRadius: const BorderRadius.all(Radius.circular(5.0))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text("Site: ${item.site}"),
+                  IconGarbage(garbage: item),
                   const SizedBox(
-                    height: 5,
+                    width: 10,
                   ),
-                  Text("Salle: ${item.salle}")
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Site: ${item.site}"),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text("Salle: ${item.salle}")
+                    ],
+                  )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         );
       },
@@ -133,7 +135,7 @@ class _GarbageManagePageState extends State<GarbageManagePage> {
                   onNotification: (notification) {
                     Navigator.of(context).pop();
                     ServiceAPI().addGarbage(notification.value).then((value) {
-                      if(value != null) {
+                      if (value != null) {
                         _addGarbageNfc(context, value);
                       }
                     });
