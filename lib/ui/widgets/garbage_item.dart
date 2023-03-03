@@ -37,7 +37,7 @@ class _GarbageItemState extends State<GarbageItem> {
           alignment: Alignment.centerLeft,
           child: Container(
             margin: const EdgeInsets.only(top: 8.0, left: 8.0),
-            child: Text(widget.waste.shape),
+            child: Text('${widget.waste.shape} ${widget.waste.material}'),
           ),
         ),
         Container(

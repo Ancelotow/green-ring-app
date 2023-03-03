@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/converter/color_converter.dart';
 import 'package:green_ring/models/notifications/submit_notification.dart';
@@ -22,18 +20,12 @@ class GarbagePage extends StatefulWidget {
 class _GarbagePageState extends State<GarbagePage> {
   Color? selectedColor;
   ServiceAPI service = ServiceAPI();
-
-  List<Waste> _waste = [
-    Waste(trashColor: "green", shape: "Bottle", material: "Plastic"),
-    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
-    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
-    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
-    Waste(trashColor: "yellow", shape: "Bouchon", material: "Plastic"),
-  ];
+  List<Waste> _waste = [];
 
   @override
   Widget build(BuildContext context) {
-    service.addCoin('1311d693-b49c-4b89-ab77-9c188cb10538');
+    _waste = widget.wastes;
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -68,6 +60,10 @@ class _GarbagePageState extends State<GarbagePage> {
     );
   }
 
+  void _addPoints() async {
+    await service.addCoin('1311d693-b49c-4b89-ab77-9c188cb10538');
+  }
+
   void _scanTrashes(BuildContext context) {
     showDialog(
       context: context,
@@ -87,7 +83,7 @@ class _GarbagePageState extends State<GarbagePage> {
                         counter++;
                         return element.trashColor == notification.value;
                       });
-
+                      _addPoints();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('+ $counter points ! 🎉'),
                       ));
