@@ -63,6 +63,8 @@ class _GarbagePageState extends State<GarbagePage> {
   }
 
   Future<void> _addPoints() async {
+    Session.instance()!.user.coins++;
+    print(Session.instance()!.user.coins);
     await service.addCoin(Session.instance()!.user.id);
   }
 
@@ -82,19 +84,20 @@ class _GarbagePageState extends State<GarbagePage> {
                     setState(() {
                       int counter = 0;
                       _waste.removeWhere((element) {
-                        counter++;
-                        return element.trashColor == notification.value;
+                        if ( element.trashColor == notification.value) {
+                          counter++;
+                          _addPoints();
+                          return true;
+                        }
+                        return false;
                       });
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('+ $counter points ! 🎉'),
                       ));
                     });
                     if (_waste.isEmpty) {
-                      _addPoints().then((value) {
-                        print("THEN");
-                        Navigator.pop(context);
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      });
+                      Navigator.pop(context);
+                      Navigator.of(context).popUntil(ModalRoute.withName(Homepage.routeName));
                     }
                     return true;
                   },
