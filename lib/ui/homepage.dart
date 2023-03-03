@@ -82,6 +82,7 @@ class _HomepageState extends State<Homepage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
+              heroTag: null,
               onPressed: () => _takePhoto(context),
               tooltip: 'Scanner le produit',
               backgroundColor: Colors.green,
@@ -91,6 +92,7 @@ class _HomepageState extends State<Homepage> {
               height: 25,
             ),
             FloatingActionButton(
+              heroTag: null,
               onPressed: () => _scanBarcode(context),
               tooltip: 'Scanner le code-barre',
               child: const Icon(Icons.qr_code),

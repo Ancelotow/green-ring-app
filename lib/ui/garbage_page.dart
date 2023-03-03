@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/converter/color_converter.dart';
 import 'package:green_ring/models/notifications/submit_notification.dart';
+import 'package:green_ring/models/session.dart';
 import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/services/service_api.dart';
+import 'package:green_ring/ui/homepage.dart';
 import 'package:green_ring/ui/widgets/garbage_item.dart';
 import 'package:green_ring/ui/widgets/nfc_reader_garbage.dart';
 
@@ -60,12 +62,12 @@ class _GarbagePageState extends State<GarbagePage> {
     );
   }
 
-  void _addPoints() async {
-    await service.addCoin('1311d693-b49c-4b89-ab77-9c188cb10538');
+  Future<void> _addPoints() async {
+    await service.addCoin(Session.instance()!.user.id);
   }
 
-  void _scanTrashes(BuildContext context) {
-    showDialog(
+  void _scanTrashes(BuildContext context) async {
+    final result = await showDialog(
       context: context,
       builder: (BuildContext contextDialog) {
         return Center(
@@ -83,13 +85,16 @@ class _GarbagePageState extends State<GarbagePage> {
                         counter++;
                         return element.trashColor == notification.value;
                       });
-                      _addPoints();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('+ $counter points ! 🎉'),
                       ));
                     });
                     if (_waste.isEmpty) {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      _addPoints().then((value) {
+                        print("THEN");
+                        Navigator.pop(context);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                      });
                     }
                     return true;
                   },
