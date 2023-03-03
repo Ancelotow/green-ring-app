@@ -66,7 +66,7 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
             }
             final waste = Waste(
                 trashColor: result,
-                shape: "déchet - ",
+                shape: "déchet - détecté comme",
                 material: materiel);
             final wastes = [waste];
             Navigator.pushNamed(
