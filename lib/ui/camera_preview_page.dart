@@ -1,6 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/services/service_api.dart';
+
+import 'garbage_page.dart';
 
 class CameraPreviewPage extends StatefulWidget {
   static const String routeName = "CameraPreviewPage";
@@ -51,6 +54,16 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
             await _initializeControllerFuture;
             final image = await _controllerCamera.takePicture();
             final result = await ServiceAPI().getIsRecyclable(image);
+            final waste = Waste(
+                trashColor: (result) ? "yellow" : "black",
+                shape: "déchet",
+                material: (result) ? "recyclable" : "non-recyclable");
+            final wastes = [waste];
+            Navigator.pushNamed(
+                context,
+                GarbagePage.routeName,
+                arguments: wastes
+            );
           } catch (e) {
             print(e);
           }
