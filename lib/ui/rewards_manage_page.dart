@@ -19,6 +19,7 @@ class _RewardsManagePageState extends State<RewardsManagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           "Admin - Récompenses",
         ),
