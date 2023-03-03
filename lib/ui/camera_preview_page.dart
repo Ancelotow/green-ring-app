@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:green_ring/services/service_api.dart';
 
 class CameraPreviewPage extends StatefulWidget {
   static const String routeName = "CameraPreviewPage";
@@ -51,6 +50,8 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
           try {
             await _initializeControllerFuture;
             final image = await _controllerCamera.takePicture();
+            final result = await ServiceAPI().getIsRecyclable(image);
+            print(result);
           } catch (e) {
             print(e);
           }
