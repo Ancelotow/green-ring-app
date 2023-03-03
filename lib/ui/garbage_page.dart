@@ -29,7 +29,7 @@ class _GarbagePageState extends State<GarbagePage> {
     _waste = widget.wastes;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text('Verification'),),
       body: SafeArea(
           child: Column(
         children: [
@@ -37,7 +37,7 @@ class _GarbagePageState extends State<GarbagePage> {
               margin: const EdgeInsets.all(8.0),
               alignment: Alignment.centerLeft,
               child:
-                  const Text('Veuillez vérifier qu\'il n\'y a pas d\'erreur.')),
+              const Text('Veuillez vérifier qu\'il n\'y a pas d\'erreur.', style: TextStyle(fontSize: 18, color: Colors.black87),)),
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
