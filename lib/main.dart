@@ -1,10 +1,9 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/admin_page.dart';
-import 'package:green_ring/ui/camera_preview_page.dart';
+import 'package:green_ring/ui/connect_distributor.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 import 'package:green_ring/ui/homepage.dart';
 import 'package:green_ring/ui/login_page.dart';

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/converter/color_converter.dart';
 import 'package:green_ring/models/notifications/submit_notification.dart';
 import 'package:green_ring/models/waste.dart';
+import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/widgets/garbage_item.dart';
 import 'package:green_ring/ui/widgets/nfc_reader_garbage.dart';
 
@@ -16,6 +19,7 @@ class GarbagePage extends StatefulWidget {
 
 class _GarbagePageState extends State<GarbagePage> {
   Color? selectedColor;
+  ServiceAPI service = ServiceAPI();
 
   List<Waste> _waste = [
     Waste(trashColor: "green", shape: "Bottle", material: "Plastic"),
@@ -27,6 +31,7 @@ class _GarbagePageState extends State<GarbagePage> {
 
   @override
   Widget build(BuildContext context) {
+    service.addCoin('1311d693-b49c-4b89-ab77-9c188cb10538');
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
