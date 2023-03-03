@@ -63,8 +63,9 @@ class _GarbagePageState extends State<GarbagePage> {
   }
 
   Future<void> _addPoints() async {
-    await service.addCoin(Session.instance()!.user.id);
     Session.instance()!.user.coins++;
+    print(Session.instance()!.user.coins);
+    await service.addCoin(Session.instance()!.user.id);
   }
 
   void _scanTrashes(BuildContext context) async {
@@ -83,9 +84,9 @@ class _GarbagePageState extends State<GarbagePage> {
                     setState(() {
                       int counter = 0;
                       _waste.removeWhere((element) {
-                        if (element.trashColor == notification.value) {
+                        if ( element.trashColor == notification.value) {
                           counter++;
-                          _addPoints().then((value) => null);
+                          _addPoints();
                           return true;
                         }
                         return false;

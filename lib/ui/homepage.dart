@@ -155,6 +155,10 @@ class _HomepageState extends State<Homepage> {
         context,
         GarbagePage.routeName,
         arguments: wastes
-    );
+    ).then((value) {
+      setState(() {
+        print("STATE");
+      });
+    });
   }
 }
