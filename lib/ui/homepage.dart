@@ -53,7 +53,7 @@ class _HomepageState extends State<Homepage> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Text(
-                  "Boujour ${user?.firstname} ${user?.lastname} !",
+                  "Bonjour ${user?.firstname} ${user?.lastname} !",
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
