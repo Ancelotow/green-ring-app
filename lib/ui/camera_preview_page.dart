@@ -58,9 +58,9 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
             if(result == "black") {
               materiel = "classique";
             } else if(result == "blue") {
-              materiel = "papier";
+              materiel = "carton / papier";
             } else if(result == "yellow") {
-              materiel = "carton";
+              materiel = "plastique";
             } else if(result == "green") {
               materiel = "verre";
             }
