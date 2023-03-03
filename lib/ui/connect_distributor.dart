@@ -1,13 +1,17 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/notifications/submit_notification.dart';
+import 'package:green_ring/models/session.dart';
+import 'package:green_ring/models/user.dart';
 import 'package:green_ring/ui/widgets/nfc_writer.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class ConnectDistributor extends StatefulWidget {
+  static String routeName = "ConnectDistributor";
+
   const ConnectDistributor({Key? key}) : super(key: key);
+
 
   @override
   State<ConnectDistributor> createState() => _ConnectDistributorState();
@@ -23,7 +27,9 @@ class _ConnectDistributorState extends State<ConnectDistributor> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [],
+          children: [
+            Expanded(child: Center(child: Icon(Icons.nfc, size: 200,color: Colors.grey.shade600,)))
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _scanDistributor(context),
@@ -34,6 +40,8 @@ class _ConnectDistributorState extends State<ConnectDistributor> {
 
 
   void _scanDistributor(BuildContext context) {
+    User user = Session.instance()!.user;
+    final jsonUser = '{"_id": "${user.id}"}';
     showDialog(
       context: context,
       builder: (BuildContext contextDialog) {
@@ -43,7 +51,7 @@ class _ConnectDistributorState extends State<ConnectDistributor> {
               AlertDialog(
                 content: NotificationListener<SubmitNotification<void>>(
                   child: NfcWriter(
-                    tagValue: '{"id":"1311d693-b49c-4b89-ab77-9c188cb10538", "firstname":"bob", "lastname":"leponge"}',
+                    tagValue: jsonUser,
                   ),
                   onNotification: (notification) {
                     Navigator.pop(context, true);

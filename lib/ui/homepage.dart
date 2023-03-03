@@ -8,6 +8,7 @@ import 'package:green_ring/ui/camera_preview_page.dart';
 import 'package:green_ring/models/user.dart';
 import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/services/service_api.dart';
+import 'package:green_ring/ui/connect_distributor.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 import '../models/session.dart';
 
@@ -47,6 +48,18 @@ class _HomepageState extends State<Homepage> {
         return false;
       },
       child: Scaffold(
+        appBar: AppBar(actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, ConnectDistributor.routeName),
+              child: const Icon(
+                Icons.card_giftcard,
+                size: 26.0,
+              ),
+            ),
+          )
+        ]),
         body: SafeArea(
           child: Stack(
             children: [

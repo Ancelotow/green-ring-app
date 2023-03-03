@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
       routes: {
         AdminPage.routeName: (BuildContext context) => const AdminPage(),
         Homepage.routeName: (BuildContext context) => const Homepage(),
+        ConnectDistributor.routeName: (BuildContext context) => const ConnectDistributor(),
       },
       onGenerateRoute: (RouteSettings settings) {
         final dynamic arguments = settings.arguments;
