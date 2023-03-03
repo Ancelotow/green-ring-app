@@ -31,6 +31,6 @@ class User {
         coins = json['coins'],
         firstname = json['firstname'],
         lastname = json['lastname'],
-        admin = json['admin'];
+        admin = false;
 
 }

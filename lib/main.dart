@@ -1,11 +1,14 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/admin_page.dart';
+import 'package:green_ring/ui/camera_preview_page.dart';
 import 'package:green_ring/ui/connect_distributor.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 import 'package:green_ring/ui/homepage.dart';
+import 'package:green_ring/ui/login_page.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 void main() {
@@ -19,10 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final service = ServiceAPI();
-    // service.getWasteById('3596710356287');
-
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -63,11 +65,24 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: Homepage(),
+      home: LoginPage(),
 
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
-        Homepage.routeName: (BuildContext context) => Homepage(),
+        AdminPage.routeName: (BuildContext context) => const AdminPage(),
+        Homepage.routeName: (BuildContext context) => const Homepage(),
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        final dynamic arguments = settings.arguments;
+        switch (settings.name) {
+          case CameraPreviewPage.routeName:
+            if (arguments is CameraDescription) {
+              return MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    CameraPreviewPage(camera: arguments),
+              );
+            }
+        }
       },
     );
   }

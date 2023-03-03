@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:green_ring/models/garbage.dart';
 import 'package:green_ring/models/user.dart';
@@ -23,6 +24,7 @@ class ServiceAPI {
     final response = await dio.get('$baseURL/trashs/');
     if(response.statusCode == 200) {
       final data = response.data as List<dynamic>;
+      print(data);
       garbages = data.map((json) => Garbage.fromJson(json)).toList();
     } else {
 
@@ -101,4 +103,33 @@ class ServiceAPI {
       return null;
     }
   }
+
+  Future<bool> getIsRecyclable(XFile file) async {
+    FormData data = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        file.path,
+        filename: file.name,
+      ),
+    });
+    final response = await dio.post('http://146.59.237.29:7590/check-recyclable', data: data);
+    if(response.statusCode == 200) {
+      final data = response.data as String;
+      print(data);
+      return data == "Recyclable";
+    } else {
+      return false;
+    }
+  }
+
+  Future<User?> connection(String login, String password) async {
+    final users = await getUsers();
+    final usersWithLogin =  users.where((e) => e.login == login);
+    if(usersWithLogin == null || usersWithLogin.isEmpty) {
+      return null;
+    } else {
+      return usersWithLogin.first;
+    }
+  }
+
+
 }

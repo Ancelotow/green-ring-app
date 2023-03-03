@@ -1,17 +1,20 @@
 import 'dart:math';
+import 'package:camera/camera.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/ui/camera_preview_page.dart';
 import 'package:green_ring/models/user.dart';
 import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/garbage_page.dart';
+import '../models/session.dart';
 
 class Homepage extends StatefulWidget {
   static String routeName = "HomePage";
 
-  Homepage({Key? key}) : super(key: key);
+  const Homepage({Key? key}) : super(key: key);
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -75,17 +78,42 @@ class _HomepageState extends State<Homepage> {
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _scanBarcode(context),
-          tooltip: 'Scanner le produit',
-          child: const Icon(Icons.qr_code),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () => _takePhoto(context),
+              tooltip: 'Scanner le produit',
+              backgroundColor: Colors.green,
+              child: const Icon(Icons.remove_red_eye),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            FloatingActionButton(
+              onPressed: () => _scanBarcode(context),
+              tooltip: 'Scanner le code-barre',
+              child: const Icon(Icons.qr_code),
+            ),
+          ],
         ),
       ),
     );
   }
 
+  Future<void> _takePhoto(BuildContext context) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+    Navigator.pushNamed(
+      context,
+      CameraPreviewPage.routeName,
+      arguments: firstCamera
+    );
+  }
+
   void _fillUser() async {
-    user = await service.getUser('1311d693-b49c-4b89-ab77-9c188cb10538');
+    user = Session.instance()!.user;
   }
 
   Future<void> _scanBarcode(BuildContext context) async {

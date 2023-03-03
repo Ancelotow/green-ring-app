@@ -4,7 +4,9 @@ import 'package:green_ring/ui/garbage_manage_page.dart';
 import 'package:green_ring/ui/rewards_manage_page.dart';
 
 class AdminPage extends StatefulWidget {
-  AdminPage({Key? key}) : super(key: key);
+  static String routeName = "AdminPage";
+
+  const AdminPage({Key? key}) : super(key: key);
 
   @override
   State<AdminPage> createState() => _AdminPageState();
