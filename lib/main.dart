@@ -7,6 +7,7 @@ import 'package:green_ring/ui/admin_page.dart';
 import 'package:green_ring/ui/camera_preview_page.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 import 'package:green_ring/ui/homepage.dart';
+import 'package:green_ring/ui/login_page.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 void main() {
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: Homepage(),
+      home: LoginPage(),
 
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
