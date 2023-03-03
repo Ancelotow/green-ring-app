@@ -56,7 +56,7 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
             final result = await ServiceAPI().getRecyclableTrash(image);
             String materiel = "inconnu";
             if(result == "black") {
-              materiel = "classique";
+              materiel = "ménagé";
             } else if(result == "blue") {
               materiel = "carton / papier";
             } else if(result == "yellow") {
@@ -68,7 +68,7 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
                 trashColor: result,
                 shape: "déchet - détecté comme",
                 material: materiel);
-            final wastes = [waste];
+            final wastes = <Waste>[waste];
             print(waste.trashColor);
 
             Navigator.pushNamed(
