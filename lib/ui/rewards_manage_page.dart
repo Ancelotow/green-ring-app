@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_ring/models/product.dart';
 import 'package:green_ring/ui/widgets/info_error.dart';
-
-import '../models/garbage.dart';
 import '../models/notifications/submit_notification.dart';
 import '../services/service_api.dart';
 import 'forms/reward_form.dart';
@@ -22,23 +20,13 @@ class _RewardsManagePageState extends State<RewardsManagePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Administrateur",
+          "Admin - Récompenses",
         ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Produits",
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .displayMedium,
-            ),
-          ),
           Expanded(
             child: FutureBuilder(
               future: ServiceAPI().getRewards(),
@@ -72,17 +60,31 @@ class _RewardsManagePageState extends State<RewardsManagePage> {
         final item = _products[index];
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                item.name
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(5.0))
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    item.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  Text(
+                    "${item.price} points"
+                  )
+                ],
               ),
-              Text(
-                "${item.price} points"
-              )
-            ],
+            ),
           ),
         );
       },

@@ -51,9 +51,9 @@ class _HomepageState extends State<Homepage> {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Text(
-                  "Boujour ${user?.firstname} ${user?.lastname} !",
+                  "Bonjour ${user?.firstname} ${user?.lastname} !",
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
@@ -136,7 +136,7 @@ class _HomepageState extends State<Homepage> {
         CircularProgressIndicator(
           backgroundColor: Colors.blue,
         ),
-        Container(margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
+        Container(margin: const EdgeInsets.only(left: 7), child: const Text("Chargement...")),
       ]),
     );
     showDialog(

@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final service = ServiceAPI();
 
     return MaterialApp(
@@ -58,16 +57,16 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           displayLarge: TextStyle(
             fontWeight: FontWeight.bold,
-              fontSize: 40.0
+            fontSize: 40.0,
           ),
           displayMedium: TextStyle(
+            fontWeight: FontWeight.bold,
             color: Colors.black,
-            fontSize: 25.0
-          )
-        )
+            fontSize: 25.0,
+          ),
+        ),
       ),
       home: LoginPage(),
-
       routes: {
         AdminPage.routeName: (BuildContext context) => const AdminPage(),
         Homepage.routeName: (BuildContext context) => const Homepage(),
@@ -204,6 +203,4 @@ class _MyHomePageState extends State<MyHomePage> {
       NfcManager.instance.stopSession();
     });
   }
-
-
 }
