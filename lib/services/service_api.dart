@@ -69,8 +69,6 @@ class ServiceAPI {
         filename: file.name,
       ),
     });
-    print(file.name);
-
     final response = await dio.post('http://146.59.237.29:7590/check-recyclable', data: data);
     if(response.statusCode == 200) {
       final data = response.data as String;

@@ -51,7 +51,6 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
             await _initializeControllerFuture;
             final image = await _controllerCamera.takePicture();
             final result = await ServiceAPI().getIsRecyclable(image);
-            print(result);
           } catch (e) {
             print(e);
           }
