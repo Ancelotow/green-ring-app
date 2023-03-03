@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/admin_page.dart';
 import 'package:green_ring/ui/camera_preview_page.dart';
@@ -68,7 +69,6 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
 
       routes: {
-        GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
         AdminPage.routeName: (BuildContext context) => const AdminPage(),
         Homepage.routeName: (BuildContext context) => const Homepage(),
       },
@@ -80,6 +80,14 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (BuildContext context) =>
                     CameraPreviewPage(camera: arguments),
+              );
+            }
+            break;
+          case GarbagePage.routeName:
+            if (arguments is List<Waste>) {
+              return MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    GarbagePage(wastes: arguments),
               );
             }
         }

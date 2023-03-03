@@ -149,6 +149,10 @@ class _HomepageState extends State<Homepage> {
     print (wastes.first.trashColor);
     print (wastes);
     Navigator.pop(context, true);
-    Navigator.of(context).push(route);
+    Navigator.pushNamed(
+        context,
+        GarbagePage.routeName,
+        arguments: wastes
+    );
   }
 }

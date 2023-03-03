@@ -9,10 +9,11 @@ import 'package:green_ring/ui/widgets/garbage_item.dart';
 import 'package:green_ring/ui/widgets/nfc_reader_garbage.dart';
 
 class GarbagePage extends StatefulWidget {
-  static String routeName = "GarbagePage";
+  static const String routeName = "GarbagePage";
+  final List<Waste> wastes;
 
 
-  const GarbagePage({Key? key}) : super(key: key);
+  GarbagePage({Key? key, required this.wastes}) : super(key: key);
 
   @override
   State<GarbagePage> createState() => _GarbagePageState();
