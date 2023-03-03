@@ -2,15 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:green_ring/models/garbage.dart';
 import 'package:green_ring/models/user.dart';
 import 'package:green_ring/models/product.dart';
+import 'package:green_ring/models/waste.dart';
 
 class ServiceAPI {
   final String baseURL = "http://146.59.237.29:7790";
   final dio = Dio();
 
-  void getHttp() async {
-    final response = await dio.get('$baseURL/wastes/3596710356287');
-    print('HERE');
-    print(response);
+  Future<List<Waste>> getWastesByBarcode(String barcode) async {
+    List<Waste> wastes = [];
+    final response = await dio.get('$baseURL/wastes/$barcode');
+    if(response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      wastes = data.map((json) => Waste.fromJson(json)).toList();
+    }
+    return wastes;
   }
 
   Future<List<Garbage>> getGarbages() async {

@@ -16,10 +16,10 @@ class _GarbageItemState extends State<GarbageItem> {
   Color? selectedColor;
 
   final List<Color> colors = [
-    Colors.grey,
+    Colors.black,
+    Colors.blue,
     Colors.green,
     Colors.yellow,
-    Colors.blue,
     Colors.brown
   ];
 

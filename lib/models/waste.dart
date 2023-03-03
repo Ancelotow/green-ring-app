@@ -10,29 +10,14 @@ class Waste {
     required this.material,
   });
 
-  Map<String, dynamic> fromJson() => {
+  Map<String, dynamic> toJson() => {
     "trashColor": trashColor,
     "shape": shape,
     "material": material
   };
-}
 
-/*
-[
-    {
-        "trashColor": "yellow",
-        "shape": "tray",
-        "material": "plastic"
-    },
-    {
-        "trashColor": "yellow",
-        "shape": "film",
-        "material": "plastic"
-    },
-    {
-        "trashColor": "blue",
-        "shape": "cardboard",
-        "material": "cardboard"
-    }
-]
- */
+  Waste.fromJson(Map<String, dynamic> json)
+      : trashColor = json['trashColor'],
+        shape = json['shape'],
+        material = json['material'];
+}

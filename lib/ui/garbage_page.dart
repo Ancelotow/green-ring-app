@@ -11,6 +11,7 @@ import 'package:green_ring/ui/widgets/nfc_reader_garbage.dart';
 class GarbagePage extends StatefulWidget {
   static String routeName = "GarbagePage";
 
+
   const GarbagePage({Key? key}) : super(key: key);
 
   @override
@@ -51,8 +52,6 @@ class _GarbagePageState extends State<GarbagePage> {
                 onNotification: (notification) {
                   setState(() {
                     _waste[index].trashColor = ColorConverter().toStringColor(notification.value);
-                    print("OKOK");
-                    print(_waste[index].trashColor);
                   });
                   return true;
                 },

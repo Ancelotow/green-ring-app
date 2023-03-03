@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:green_ring/models/user.dart';
+import 'package:green_ring/models/waste.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 
@@ -91,10 +92,35 @@ class _HomepageState extends State<Homepage> {
     try {
       String result = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      Navigator.of(context).pushNamed(GarbagePage.routeName);
-      // TODO: Appeler l'API pour envoyer le code barre
+      print("HERE");
+      print(result);
+      await _printLoader(result);
     } on PlatformException {
       print("Erreur: Failed to get platform version.");
     }
+  }
+
+  Future<void> _printLoader(result) async {
+    AlertDialog alert = AlertDialog(
+      content: Row(children: [
+        CircularProgressIndicator(
+          backgroundColor: Colors.blue,
+        ),
+        Container(margin: const EdgeInsets.only(left: 7), child: const Text("Loading...")),
+      ]),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+    List<Waste> wastes = await service.getWastesByBarcode(result);
+    print("FINALLY");
+    print (wastes.first.trashColor);
+    print (wastes);
+    Navigator.pop(context, true);
+    Navigator.of(context).push(route);
   }
 }
