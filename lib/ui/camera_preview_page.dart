@@ -53,11 +53,11 @@ class _CameraPreviewPageState extends State<CameraPreviewPage> {
           try {
             await _initializeControllerFuture;
             final image = await _controllerCamera.takePicture();
-            final result = await ServiceAPI().getIsRecyclable(image);
+            final result = await ServiceAPI().getRecyclableTrash(image);
             final waste = Waste(
-                trashColor: (result) ? "yellow" : "black",
+                trashColor: result,
                 shape: "déchet",
-                material: (result) ? "recyclable" : "non-recyclable");
+                material: (result != "black") ? "recyclable" : "non-recyclable");
             final wastes = [waste];
             Navigator.pushNamed(
                 context,
