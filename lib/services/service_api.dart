@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:green_ring/models/garbage.dart';
-
-import '../models/product.dart';
-
+import 'package:green_ring/models/user.dart';
+import 'package:green_ring/models/product.dart';
 
 class ServiceAPI {
   final String baseURL = "http://146.59.237.29:7790";
@@ -58,5 +57,43 @@ class ServiceAPI {
 
     }
     return products;
+  }
+
+
+  /// USERS
+  Future<List<User>> getUsers() async {
+    List<User> users = [];
+    final response = await dio.get('$baseURL/users/');
+    if(response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      users = data.map((json) => User.fromJson(json)).toList();
+    }
+    return users;
+  }
+  Future<User?> getUser(String userId) async {
+    final response = await dio.get('$baseURL/users/$userId');
+    if(response.statusCode == 200) {
+      return User.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<User?> addUser(User user) async {
+    final response = await dio.post('$baseURL/users/create', data: user.toJson());
+    if(response.statusCode == 200 || response.statusCode == 201) {
+      return User.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<User?> addCoin(String userId) async {
+    final response = await dio.get('$baseURL/users/$userId/addCoin');
+    if(response.statusCode == 200) {
+      return User.fromJson(response.data);
+    } else {
+      return null;
+    }
   }
 }

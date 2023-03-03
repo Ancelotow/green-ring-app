@@ -3,6 +3,8 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:green_ring/models/user.dart';
+import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/garbage_page.dart';
 
 class Homepage extends StatefulWidget {
@@ -16,12 +18,15 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   late ConfettiController _controllerCenter;
+  ServiceAPI service = ServiceAPI();
+  User? user;
 
   @override
   void initState() {
     super.initState();
     _controllerCenter =
         ConfettiController(duration: const Duration(seconds: 20));
+    _fillUser();
   }
 
   @override
@@ -32,45 +37,54 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Text(
-                "Boujour Charles DUPOND !",
-                style: Theme.of(context).textTheme.displayMedium,
+    return WillPopScope(
+      onWillPop: () async {
+        _fillUser();
+        return false;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  "Boujour ${user?.firstname} ${user?.lastname} !",
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "13\npoints",
-                style: Theme.of(context).textTheme.displayLarge,
-                textAlign: TextAlign.center,
+              Align(
+                alignment: Alignment.center,
+                child: Text("${user?.coins}\npoints 🎉",
+                  style: Theme.of(context).textTheme.displayLarge,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: ConfettiWidget(
-                confettiController: _controllerCenter,
-                blastDirection: pi / 2,
-                maxBlastForce: 10,
-                minBlastForce: 2,
-                emissionFrequency: 0.05,
-                numberOfParticles: 5,
+              Align(
+                alignment: Alignment.topCenter,
+                child: ConfettiWidget(
+                  confettiController: _controllerCenter,
+                  blastDirection: pi / 2,
+                  maxBlastForce: 10,
+                  minBlastForce: 2,
+                  emissionFrequency: 0.05,
+                  numberOfParticles: 5,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _scanBarcode(context),
+          tooltip: 'Scanner le produit',
+          child: const Icon(Icons.qr_code),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _scanBarcode(context),
-        tooltip: 'Scanner le produit',
-        child: const Icon(Icons.qr_code),
-      ),
     );
+  }
+
+  void _fillUser() async {
+    user = await service.getUser('1311d693-b49c-4b89-ab77-9c188cb10538');
   }
 
   Future<void> _scanBarcode(BuildContext context) async {

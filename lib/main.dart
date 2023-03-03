@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           )
         )
       ),
-      home: ConnectDistributor(),
+      home: Homepage(),
 
       routes: {
         GarbagePage.routeName: (BuildContext context) => const GarbagePage(),
