@@ -1,16 +1,13 @@
 # green_ring
 
-A new Flutter project.
+Projet flutter pour le Hackaton 2023 dà l'ESGI
 
-## Getting Started
+# Groupe :
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    - ANCELOT Owen
+    - VANNIER Timoté
+    - BLASON Lucas
+    - DAILLY Armand
+    - FUENTES Jonathan
+    - JOURDAIN Arnaud
+    - LOUNI Sid Ahmed

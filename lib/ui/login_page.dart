@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_ring/services/service_api.dart';
+import 'package:green_ring/ui/admin_page.dart';
 import 'package:green_ring/ui/homepage.dart';
 import '../models/session.dart';
 
@@ -31,7 +32,11 @@ class _LoginPageState extends State<LoginPage> {
         wrongCredentials();
       } else {
         Session.open(user);
-        Navigator.of(context).pushNamed(Homepage.routeName);
+        if(user.admin) {
+          Navigator.of(context).pushNamed(AdminPage.routeName);
+        } else {
+          Navigator.of(context).pushNamed(Homepage.routeName);
+        }
       }
     }
   }

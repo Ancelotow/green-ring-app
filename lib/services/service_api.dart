@@ -104,7 +104,7 @@ class ServiceAPI {
     }
   }
 
-  Future<bool> getIsRecyclable(XFile file) async {
+  Future<String> getRecyclableTrash(XFile file) async {
     FormData data = FormData.fromMap({
       "file": await MultipartFile.fromFile(
         file.path,
@@ -114,10 +114,9 @@ class ServiceAPI {
     final response = await dio.post('http://146.59.237.29:7590/check-recyclable', data: data);
     if(response.statusCode == 200) {
       final data = response.data as String;
-      print(data);
-      return data == "Recyclable";
+      return data;
     } else {
-      return false;
+      return "black";
     }
   }
 
