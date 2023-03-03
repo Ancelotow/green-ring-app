@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/homepage.dart';
+import '../models/session.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});
@@ -23,12 +25,18 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       );
+      final user = await ServiceAPI().connection(emailController.text, passwordController.text);
       Navigator.pop(context);
-      Navigator.of(context).pushNamed(Homepage.routeName);
+      if(user == null) {
+        wrongCredentials();
+      } else {
+        Session.open(user);
+        Navigator.of(context).pushNamed(Homepage.routeName);
+      }
     }
   }
 
-  void wrongEmailMessage() {
+  void wrongCredentials() {
     showDialog(
       context: context,
       builder: (context) {
@@ -36,24 +44,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.deepPurple,
           title: Center(
             child: Text(
-              'Incorrect Email',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void wrongPasswordMessage() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const AlertDialog(
-          backgroundColor: Colors.deepPurple,
-          title: Center(
-            child: Text(
-              'Incorrect Password',
+              'Votre identifiant et/ou votre mot de passe ont incorrects',
               style: TextStyle(color: Colors.white),
             ),
           ),

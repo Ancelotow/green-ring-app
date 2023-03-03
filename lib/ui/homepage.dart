@@ -8,6 +8,7 @@ import 'package:green_ring/ui/camera_preview_page.dart';
 import 'package:green_ring/models/user.dart';
 import 'package:green_ring/services/service_api.dart';
 import 'package:green_ring/ui/garbage_page.dart';
+import '../models/session.dart';
 
 class Homepage extends StatefulWidget {
   static String routeName = "HomePage";
@@ -111,7 +112,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   void _fillUser() async {
-    user = await service.getUser('1311d693-b49c-4b89-ab77-9c188cb10538');
+    user = Session.instance()!.user;
   }
 
   Future<void> _scanBarcode(BuildContext context) async {

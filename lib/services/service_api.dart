@@ -116,5 +116,15 @@ class ServiceAPI {
     }
   }
 
+  Future<User?> connection(String login, String password) async {
+    final users = await getUsers();
+    final usersWithLogin =  users.where((e) => e.login == login);
+    if(usersWithLogin == null || usersWithLogin.isEmpty) {
+      return null;
+    } else {
+      return usersWithLogin.first;
+    }
+  }
+
 
 }
